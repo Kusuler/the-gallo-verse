@@ -90,59 +90,12 @@ growrate = 5
 sizeilia = 150
 
 # ------------------
-olivia_timer = 0
-olivia_circle_counter = 0
 
-olivia_circles_list = []
+plane_x_joanne = 0
+frames_joanne = 0
+num_dashes_joanne = 0
 
-olivia_text = "Aw sweet! Man-made horrors beyond my comprehension!"
-
-olivia_font = pygame.font.SysFont("Arial",20)
-
-for i in range(20,640,40):
-    for j in range(20,480,40):
-        if (i + j) % 80 == 0:
-            olivia_circles_list.append({"x":i,"y":j})
-
-#HUZZAH I DONT NEED TO WORRY ABOUT VARIABLE NAMES THANK GOD FOR LOCAL VARIABLES
-def olivia_draw_circles():
-    for circle in olivia_circles_list:
-        num = (circle["x"] + circle["y"])/20 + olivia_timer
-        r = 255 * abs(math.cos(math.pi*(num/60-1/3)))
-        g = 255 * abs(math.cos(math.pi*(num/60-2/3)))
-        b = 255 * abs(math.cos(math.pi*(num/60-3/3)))
-        
-        circle_x = x+circle["x"]
-        circle_y = y+circle["y"]+math.sin(math.pi*num/20)*8
-        circle_colour = (r,g,b)
-        circle_size = 20
-        # mouse hover doesn't work in galloverse :(
-        '''mouse_x, mouse_y = pygame.mouse.get_pos()       
-        x_distance = abs(circle_x - mouse_x)
-        y_distance = abs(circle_y - mouse_y)
-        
-        if x_distance <= 100 and y_distance <= 100:
-            circle_size += (200 - x_distance - y_distance)/10'''
-        
-        pygame.draw.circle(screen,circle_colour,(circle_x,circle_y),circle_size)
-
-def olivia_generate_text():
-    letters = "aaaaaaaabbcccddddeeeeeeeeeeeefffgghhhhhhiiiiiiiijkllllmmmnnnnnnnnooooooooppqrrrrrrsssssssstttttttttuuuvwwxyyz"
-    symbols = "!?,.:;"
-    string = " "
-    for i in range(15):
-        num = random.randrange(0,25)
-        if num == 24 and string[i-1] not in symbols and string[i-1] != " ":
-            string += symbols[random.randrange(0,len(symbols))] + " "
-        elif num > 15 and string[i-1] != " ":
-            string += " "
-        else:
-            string += letters[random.randrange(0,len(letters))]
-    string += symbols[random.randrange(0,3)]
-    string = string [1:]
-    return(string)
 # ------------------
-
 
 running = True
 while running:
@@ -372,46 +325,81 @@ while running:
     pygame.draw.rect(screen, (45, 96, 255), (x, y, width_ilia, height_ilia))
 
     pygame.draw.circle(screen, flash_color, (x + circle_x_ilia, y + circle_y_ilia), sizeilia)
-    #  OLIVIA ------------------
-    x = 3840
-    y = 1440
-    if olivia_timer % 60 == 0:
-        olivia_text = olivia_font.render(olivia_generate_text(),True,"black")
-    olivia_timer += 1
-    pygame.draw.rect(screen,(80,30,70),(x,y,640,480))
-    olivia_draw_circles()
+
+    # ----------------------------------------------------------------------------------------
+
+    x = 1280
+    y = 2400
+    width = 640
+    height = 480
     
-    olivia_cat_x = 5*(abs(100-olivia_timer/2%200))+x-75
-    olivia_cat_y = -50*(abs(math.sin(olivia_timer/10)))+y
-    #text
-    pygame.draw.ellipse(screen,"black",(olivia_cat_x+50,y+150,180,120))
-    pygame.draw.polygon(screen,"black",((olivia_cat_x+125,y+263),(olivia_cat_x+155,y+263),(olivia_cat_x+140,olivia_cat_y*0.5+y*0.5+330)))
-    pygame.draw.ellipse(screen,"white",(olivia_cat_x+54,y+154,172,112))
-    pygame.draw.polygon(screen,"white",((olivia_cat_x+130,y+260),(olivia_cat_x+150,y+260),(olivia_cat_x+140,olivia_cat_y*0.5+y*0.5+320)))
-    screen.blit(olivia_text,(olivia_cat_x+70,y+195))
+    plane_x_joanne += 1
+    frames_joanne += 1
     
-    #body
-    pygame.draw.ellipse(screen,"black",(olivia_cat_x+96,olivia_cat_y+351,88,78))
-    pygame.draw.polygon(screen,"black",((olivia_cat_x+104,olivia_cat_y+340),(olivia_cat_x+101,olivia_cat_y+377),(olivia_cat_x+131,olivia_cat_y+360)))
-    pygame.draw.polygon(screen,"black",((olivia_cat_x+175,olivia_cat_y+340),(olivia_cat_x+178,olivia_cat_y+377),(olivia_cat_x+148,olivia_cat_y+360)))
-    pygame.draw.ellipse(screen,"white",(olivia_cat_x+100,olivia_cat_y+355,80,70))
-    pygame.draw.polygon(screen,"white",((olivia_cat_x+106,olivia_cat_y+345),(olivia_cat_x+106,olivia_cat_y+370),(olivia_cat_x+126,olivia_cat_y+360)))
-    pygame.draw.polygon(screen,"white",((olivia_cat_x+173,olivia_cat_y+345),(olivia_cat_x+173,olivia_cat_y+370),(olivia_cat_x+153,olivia_cat_y+360)))
-    #mouth
-    if 100-olivia_timer/2%200 > 0:
-        olivia_cat_x -= 5
-    else:
-        olivia_cat_x += 5
-    pygame.draw.ellipse(screen,"black",(olivia_cat_x+127,olivia_cat_y+378,26,39))
-    pygame.draw.ellipse(screen,"white",(olivia_cat_x+130,olivia_cat_y+381,20,33))
-    pygame.draw.ellipse(screen,"black",(olivia_cat_x+122,olivia_cat_y+378,20,20))
-    pygame.draw.ellipse(screen,"black",(olivia_cat_x+138,olivia_cat_y+378,20,20))
-    pygame.draw.ellipse(screen,"white",(olivia_cat_x+119,olivia_cat_y+376,23,19))
-    pygame.draw.ellipse(screen,"white",(olivia_cat_x+138,olivia_cat_y+376,23,19))
-    pygame.draw.rect(screen,"white",(olivia_cat_x+120,olivia_cat_y+370,40,20))
-    #eyes
-    pygame.draw.ellipse(screen,"black",(olivia_cat_x+123,olivia_cat_y+380,6,8))
-    pygame.draw.ellipse(screen,"black",(olivia_cat_x+151,olivia_cat_y+380,6,8))
+    
+    pygame.draw.rect(screen, (128, 192, 255), (x, y, width, height))
+    
+    pygame.draw.rect(screen, (174, 255, 91), (x, y + 340, width, 140))
+    
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 30, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 65, y + 65, 50, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 105, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 55, y + 42, 40, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 85, y + 42, 40, 35))
+    
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 180, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 215, y + 65, 50, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 255, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 205, y + 42, 40, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 235, y + 42, 40, 35))
+    
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 330, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 365, y + 65, 50, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 405, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 355, y + 42, 40, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 385, y + 42, 40, 35))
+    
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 480, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 510, y + 65, 50, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 550, y + 60, 45, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 500, y + 42, 40, 35))
+    pygame.draw.ellipse(screen, (255, 255, 255), (x + 530, y + 42, 40, 35))
+    
+    
+    spacing_joanne = 7
+    line_joanne = 50
+    space_joanne = 0
+    width_joanne = 6
+    count_joanne = 0
+    
+    if frames_joanne % 13 == 0:
+        num_dashes_joanne += 1
+    
+    while count_joanne <= num_dashes_joanne:
+        line = pygame.draw.aaline(screen, (250, 250, 250), (x + space_joanne, y + 205), (x + 10 + space_joanne, y + 205))
+        space_joanne += width_joanne + spacing_joanne
+        count_joanne += 1
+    
+    if frames_joanne > 640:
+        pygame.draw.rect(screen, (128, 192, 255), (x, y + 200, width, 10))
+        space_joanne = 0
+        count_joanne = 0
+        frames_joanne = 0
+        num_dashes_joanne = 0
+    
+    
+    pygame.draw.ellipse(screen, (255, 128, 0), (x + plane_x_joanne, y + 200, 30, 20))
+    pygame.draw.ellipse(screen, (96, 96, 96), (x + 28 + plane_x_joanne, y + 205, 7, 10))
+    pygame.draw.ellipse(screen, (0, 0, 0), (x + 29 + plane_x_joanne, y + 185, 4, 20))
+    pygame.draw.ellipse(screen, (0, 0, 0), (x + 29 + plane_x_joanne, y + 215, 4, 20))
+    pygame.draw.ellipse(screen, (204, 102, 0), (x - 48 + plane_x_joanne, y + 190, 13, 20))
+    pygame.draw.polygon(screen, (255, 128, 0), [(x + 11 + plane_x_joanne, y + 201), (x - 48 + plane_x_joanne, y + 201), (x - 48 + plane_x_joanne, y + 210), (x + 14 + plane_x_joanne, y + 220)])
+    pygame.draw.ellipse(screen, (255, 85, 0), (x + -15 + plane_x_joanne, y + 208, 30, 5))
+    pygame.draw.circle(screen, (128, 192, 255), (x + 12 + plane_x_joanne, y + 198), 7)
+    
+    if plane_x_joanne > 640:
+        plane_x_joanne = 0
+
     # ----------------------------------------------------------------------------------------
 
     # Must have these coordinates
